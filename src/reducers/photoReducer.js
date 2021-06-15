@@ -5,7 +5,7 @@ import Actions from 'actions'
 import { mapPhotoModel } from 'mappers/photoMap'
 
 const initialState = {
-  searchText: '123',
+  searchText: '',
   isLoading: false,
   isRefreshing: false,
   data: {
