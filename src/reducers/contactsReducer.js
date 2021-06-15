@@ -1,9 +1,6 @@
 // Actions
 import Actions from 'actions'
 
-// Map
-import { mapPhotoModel } from 'mappers/photoMap'
-
 const initialState = {
   contacts: {
     isLoading: false,
