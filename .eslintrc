@@ -80,7 +80,7 @@
     "react/jsx-max-props-per-line": [
       1,
       {
-        "maximum": 1
+        "maximum": 2
       }
     ],
     "react/jsx-no-bind": [
@@ -104,6 +104,6 @@
         "asyncArrow": "always"
       }
     ],
-    "yield-star-spacing": ["error", { "before": true, "after": false }],
+    "yield-star-spacing": ["error", { "before": true, "after": false }]
   }
 }
