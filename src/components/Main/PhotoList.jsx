@@ -73,7 +73,7 @@ export const PhotoList = () => {
       keyExtractor={keyExtractor}
       ListHeaderComponent={SearchBar}
       ListFooterComponent={getFooter()}
-      renderItem={PhotoListItem}
+      renderItem={({ item }) => <PhotoListItem item={item} />}
       keyboardDismissMode='on-drag'
       keyboardShouldPersistTaps='handled'
       onEndReached={() => page <= pages && loadData(page + 1)}

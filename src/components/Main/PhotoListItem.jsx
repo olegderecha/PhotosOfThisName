@@ -3,7 +3,7 @@ import React, { useState } from 'react'
 import PropTypes from 'prop-types'
 
 // Components
-import { StyleSheet, View, Text, Image } from 'react-native'
+import { StyleSheet, View, Text, Image, ActivityIndicator } from 'react-native'
 
 // Utils
 import moment from 'moment'
@@ -30,6 +30,14 @@ const styles = StyleSheet.create({
     borderRadius: 5,
   },
   image: {
+    width: WIDTH,
+    height: 100,
+    marginRight: 10,
+    borderRadius: 5,
+  },
+  loadingIndicator: {
+    position: 'absolute',
+    top: 50,
     width: WIDTH,
     height: 100,
     marginRight: 10,
@@ -64,16 +72,24 @@ const styles = StyleSheet.create({
 })
 
 const PhotoListItem = ({ item }) => {
-  // const [isVisible, setIsVisible] = useState(true)
+  const [isLoaded, setIsLoaded] = useState(false)
 
   const uri = getImageUrl(item)
   const ratio = (+item.originalWidth || +item.largeWidth) / (+item.originalHeight || +item.largeHeight)
   const height = !isNaN(ratio) ? WIDTH / ratio : null
   const lastUpdate = moment.unix(item.lastUpdate).format(POST_DATE_FORMAT)
+  const opacity = isLoaded ? 1 : 0
 
   return (
     <View style={styles.container}>
-      <Image style={[styles.image, { height }]} source={{ uri }} />
+      <Image
+        style={[styles.image, { height, opacity }]}
+        source={{ uri }}
+        onLoadEnd={() => setIsLoaded(true)}
+      />
+
+      {!isLoaded && <ActivityIndicator style={styles.loadingIndicator} size={'small'} />}
+
       <View style={styles.infoContainer}>
         <View style={styles.infoContainer1}>
           <Text style={styles.title} numberOfLines={2}>
@@ -93,7 +109,7 @@ const PhotoListItem = ({ item }) => {
 }
 
 PhotoListItem.propTypes = {
-  item: PropTypes.Object,
+  item: PropTypes.object,
 }
 
 export default PhotoListItem
