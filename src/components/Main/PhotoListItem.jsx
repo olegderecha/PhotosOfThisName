@@ -88,7 +88,13 @@ const PhotoListItem = ({ item }) => {
         onLoadEnd={() => setIsLoaded(true)}
       />
 
-      {!isLoaded && <ActivityIndicator style={styles.loadingIndicator} size={'small'} />}
+      {!isLoaded && (
+        <ActivityIndicator
+          style={styles.loadingIndicator}
+          size={'small'}
+          color={colors.LOADING_INDICATOR}
+        />
+      )}
 
       <View style={styles.infoContainer}>
         <View style={styles.infoContainer1}>

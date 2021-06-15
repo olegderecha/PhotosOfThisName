@@ -55,7 +55,14 @@ export const PhotoList = () => {
       )
     }
 
-    return hasData && <ActivityIndicator style={styles.loadingIndicator} size={'small'} />
+    return (
+      hasData &&
+        <ActivityIndicator
+          style={styles.loadingIndicator}
+          size={'small'}
+          color={colors.LOADING_INDICATOR}
+        />
+    )
   }
 
   return (
