@@ -3,11 +3,12 @@ import React, { useState } from 'react'
 import PropTypes from 'prop-types'
 
 // Components
-import { StyleSheet, View, Text, Image, ActivityIndicator } from 'react-native'
+import { StyleSheet, View, Text, Image, ActivityIndicator, TouchableOpacity } from "react-native";
 
 // Utils
 import moment from 'moment'
 import { getImageUrl } from 'utils/urlUtils'
+import { openImageInBrowser } from 'utils/navigationUtils'
 
 // Styles
 import colors from 'styles/colors'
@@ -80,8 +81,16 @@ const PhotoListItem = ({ item }) => {
   const lastUpdate = moment.unix(item.lastUpdate).format(POST_DATE_FORMAT)
   const opacity = isLoaded ? 1 : 0
 
+  const openImage = async () => {
+    const uri = getImageUrl({ ...item, sizeSuffix: 'c' })
+    await openImageInBrowser(uri)
+  }
+
   return (
-    <View style={styles.container}>
+    <TouchableOpacity
+      style={styles.container}
+      onPress={openImage}
+    >
       <Image
         style={[styles.image, { height, opacity }]}
         source={{ uri }}
@@ -110,7 +119,7 @@ const PhotoListItem = ({ item }) => {
           <Text style={styles.info2} numberOfLines={1}>{`Posted: ${lastUpdate}`}</Text>
         </View>
       </View>
-    </View>
+    </TouchableOpacity>
   )
 }
 
