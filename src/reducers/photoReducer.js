@@ -5,11 +5,13 @@ import Actions from 'actions'
 import { mapPhotoModel } from 'mappers/photoMap'
 
 const initialState = {
-  searchText: '',
+  searchText: '123',
   isLoading: false,
   isRefreshing: false,
   data: {
     page: 1,
+    pages: 1,
+    total: null,
     photos: [],
   },
   error: null,
@@ -41,6 +43,7 @@ export default (state = initialState, action) => {
           ...state.data,
           page: action.payload.page,
           pages: action.payload.pages,
+          total: action.payload.total,
           photos: isFirstPage
             ? action.payload.photo.map(mapPhotoModel)
             : [...state.data.photos, ...action.payload.photo.map(mapPhotoModel)],
@@ -54,6 +57,10 @@ export default (state = initialState, action) => {
         isRefreshing: false,
         error: action.payload,
         warning: null,
+        data: {
+          ...state.data,
+          total: null,
+        },
       }
     default:
       return state

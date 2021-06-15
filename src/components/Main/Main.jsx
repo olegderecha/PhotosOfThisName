@@ -1,8 +1,8 @@
 // React
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 
 // Components
-import { StyleSheet, ScrollView } from 'react-native'
+import { StyleSheet } from 'react-native'
 import LinearGradient from 'react-native-linear-gradient'
 
 import PhotoList from 'components/Main/PhotoList'

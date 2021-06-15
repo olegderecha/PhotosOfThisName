@@ -1,14 +1,18 @@
 // React & Redux
-import React, { createRef } from 'react'
+import React, { createRef, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 
 // Components
-import { StyleSheet, View, TextInput } from 'react-native'
+import { StyleSheet, View, TextInput, Text } from 'react-native'
 import { Button } from 'react-native-elements'
 import Icon from 'react-native-vector-icons/FontAwesome'
+import ContactListModal from 'components/Main/ContactListModal'
 
 // Actions
 import Actions from 'actions'
+
+// Utils
+import { divideByThousands } from 'utils/stringUtils'
 
 // Styles
 import colors from 'styles/colors'
@@ -57,6 +61,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
   },
   searchButton: {
+    marginBottom: 15,
     width: 130,
     height: 40,
     borderRadius: 10,
@@ -64,6 +69,9 @@ const styles = StyleSheet.create({
   buttonTitle: {
     marginLeft: 10,
     fontSize: 14,
+  },
+  resultText: {
+    color: colors.TEXT_PRIMARY,
   },
 })
 
@@ -73,6 +81,20 @@ export const SearchBar = () => {
   const searchInputRef = createRef()
 
   const { isLoading, searchText } = useSelector((state) => state.photoReducer)
+  const { total } = useSelector((state) => state.photoReducer.data)
+
+  const [isContactListOpen, setIsContactListOpen] = useState(false)
+
+  const handlePickContacts = () => {
+    setIsContactListOpen(true)
+    searchInputRef.current.blur()
+  }
+
+  const handleSelectContact = (contactName) => {
+    dispatch(Actions.searchPhotosRequested({ text: contactName }))
+    dispatch(Actions.setSearchText(contactName))
+    setIsContactListOpen(false)
+  }
 
   const handleSearch = () => {
     dispatch(Actions.searchPhotosRequested({ text: searchText }))
@@ -93,14 +115,6 @@ export const SearchBar = () => {
             style={styles.searchInput}
             value={searchText}
             onChangeText={(value) => dispatch(Actions.setSearchText(value))}
-            // onKeyDown={(e) => {
-            //   console.log('>>> e.nativeEvent.key', e.nativeEvent.key)
-            //   if (e.nativeEvent.key === 'Enter') {
-            //     // console.log('>>> onEntere.nativeEvent.text', e.nativeEvent.text)
-            //     // dispatch(Actions.setSearchText(e.nativeEvent.text))
-            //     handleSearch()
-            //   }
-            // }}
           />
 
           <Icon
@@ -124,6 +138,7 @@ export const SearchBar = () => {
               color={colors.LOADING_INDICATOR_LIGHT}
             />
           }
+          onPress={handlePickContacts}
         />
       </View>
 
@@ -142,6 +157,9 @@ export const SearchBar = () => {
         loading={isLoading}
         onPress={handleSearch}
       />
+
+      {!!total && <Text style={styles.resultText}>{`Found ${divideByThousands(total)} photos`}</Text>}
+      <ContactListModal isOpen={isContactListOpen} onSelect={handleSelectContact} />
     </View>
   )
 }
